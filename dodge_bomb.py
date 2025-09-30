@@ -2,6 +2,7 @@ import os
 import sys
 import pygame as pg
 import random
+import time
 
 
 WIDTH, HEIGHT = 1100, 650
@@ -25,6 +26,29 @@ def check_bound(rct: pg.Rect) -> tuple[bool, bool]:
     if rct.top < 0 or HEIGHT < rct.bottom:  # 縦方向にはみ出ていたら
         tate = False
     return yoko, tate  # 縦横方向の真理値タプル
+
+def gameover(screen:pg.Surface) -> None:  # ゲームオーバー画面
+    bo_img = pg.Surface((WIDTH, HEIGHT))  # 空のSurface
+    pg.draw.rect(bo_img, (0, 0, 0), (0, 0, WIDTH, HEIGHT))
+    bo_img.set_alpha(200)  # 透明度
+    font = pg.font.Font(None, 80)
+    txt = font.render("GAMEOVER", True, (255, 255, 255))  # テキスト
+    txt_rct = txt.get_rect()
+    txt_rct.center = WIDTH // 2, HEIGHT // 2
+    bo_img.blit(txt, txt_rct)
+    kkk_img = pg.transform.rotozoom(pg.image.load("fig/8.png"), 0, 0.9)
+    kkk_rct1 = kkk_img.get_rect()
+    kkk_rct1.center = WIDTH // 2 - 200, HEIGHT // 2  # 左
+    bo_img.blit(kkk_img, kkk_rct1)
+
+    kkk_rct2 = kkk_img.get_rect()
+    kkk_rct2.center = WIDTH // 2 + 200, HEIGHT // 2  # 右
+    bo_img.blit(kkk_img, kkk_rct2)
+
+    screen.blit(bo_img, (0, 0))
+    pg.display.update()
+    time.sleep(5)
+    
 
 
 def main():
@@ -53,6 +77,7 @@ def main():
         screen.blit(bg_img, [0, 0]) 
 
         if kk_rct.colliderect(bb_rct):
+            gameover(screen)
             return  # ゲームオーバー
 
         key_lst = pg.key.get_pressed()
@@ -91,3 +116,4 @@ if __name__ == "__main__":
     main()
     pg.quit()
     sys.exit()
+    
