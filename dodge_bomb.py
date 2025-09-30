@@ -85,9 +85,7 @@ def main():
     
     clock = pg.time.Clock()
     tmr = 0
-    bb_imgs, bb_accs = init_bb_imgs()
-    avx = vx * bb_accs[min(tmr//500, 9)]
-    bb_img = bb_imgs[min(tmr//500, 9)]
+
     
     
     while True:
